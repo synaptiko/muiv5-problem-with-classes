@@ -3,10 +3,26 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { CssBaseline } from '@mui/material';
+
+export const muiCache = createCache({
+    "key": "mui",
+    "prepend": true
+});
+
+export const theme = createTheme({});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <CacheProvider value={muiCache}>
+        <ThemeProvider theme={theme}>
+					<CssBaseline />
+					<App />
+        </ThemeProvider>
+    </CacheProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
