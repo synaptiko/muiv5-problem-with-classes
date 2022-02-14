@@ -2,6 +2,7 @@ import Container from '@mui/material/Container';
 import Chip, { chipClasses } from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { makeStyles, withStyles } from 'tss-react/mui';
+import { makeStyles as makeStylesWorkaround, withStyles as withStylesWorkaround } from './styles';
 import { Typography } from '@mui/material';
 
 const useStylesActual = makeStyles()((theme) => ({
@@ -56,9 +57,36 @@ const StyledChipExpected = withStyles(Chip, (theme, _props, classes) => ({
   },
 }));
 
+const useStylesWorkaround = makeStylesWorkaround()((theme) => ({
+  root: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+  },
+  deleteIcon: {
+    color: theme.palette.primary.contrastText,
+    '&:hover': {
+      color: `${theme.palette.primary.contrastText}6`,
+    },
+  },
+}));
+
+const StyledChipWorkaround = withStylesWorkaround(Chip, (theme) => ({
+  root: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+  },
+  deleteIcon: {
+    color: theme.palette.primary.contrastText,
+    '&:hover': {
+      color: `${theme.palette.primary.contrastText}6`,
+    },
+  },
+}));
+
 function App() {
   const { classes: classesActual } = useStylesActual();
   const { classes: classesExpected } = useStylesExpected();
+  const { classes: classesWorkaround } = useStylesWorkaround();
 
   return (
     <Container maxWidth="md" sx={{ my: 4 }}>
@@ -74,6 +102,12 @@ function App() {
           <Chip label="Default chip" onDelete={() => {}} />
           <Chip label="Chip with classes" onDelete={() => {}} classes={classesExpected} />
           <StyledChipExpected label="Styled chip" onDelete={() => {}} />
+        </Stack>
+        <Typography variant="h4">Workaround</Typography>
+        <Stack direction="row" spacing={1}>
+          <Chip label="Default chip" onDelete={() => {}} />
+          <Chip label="Chip with classes" onDelete={() => {}} classes={classesWorkaround} />
+          <StyledChipWorkaround label="Styled chip" onDelete={() => {}} />
         </Stack>
       </Stack>
     </Container>
